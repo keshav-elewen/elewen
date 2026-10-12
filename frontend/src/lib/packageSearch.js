@@ -325,19 +325,35 @@ export function packageMatchesSearch(pkg, query) {
   return textMatchesQuery(blob, q)
 }
 
+/** True when the query words appear in the package's linked event names/slugs. */
+function packageMatchesEventSearch(pkg, query) {
+  const blob = packageEventSearchBlob(pkg)
+  if (!blob) return false
+
+  return textMatchesQuery(blob, query)
+}
+
 /**
  * Prefer direct title/slug matches, then theme-only results, then broader text search.
+ * Event-linked packages always join the results — searching "diwali" must surface
+ * packages of the Diwali Party event even when some package title also matches.
  */
 export function filterPackagesBySearch(packages, query) {
   const list = Array.isArray(packages) ? packages : []
   const q = String(query ?? '').trim()
   if (!q) return list
 
+  const eventHits = list.filter(pkg => packageMatchesEventSearch(pkg, q))
+
   const directHits = list.filter(pkg => packageMatchesDirectTitleSearch(pkg, q))
-  if (directHits.length > 0) return directHits
+  if (directHits.length > 0) {
+    return [...directHits, ...eventHits.filter(pkg => !directHits.includes(pkg))]
+  }
 
   const themeHits = list.filter(pkg => packageMatchesThemeSearch(pkg, q))
-  if (themeHits.length > 0) return themeHits
+  if (themeHits.length > 0) {
+    return [...themeHits, ...eventHits.filter(pkg => !themeHits.includes(pkg))]
+  }
 
   return list.filter(pkg => packageMatchesSearch(pkg, q))
 }

@@ -95,9 +95,9 @@ check(
   3
 )
 check(
-  'designed ranking: a title hit outranks event-only hits',
-  filterPackagesBySearch(all, 'diwali')[0]?.title,
-  'Diwali Delight'
+  'merged ranking: title hit first, event-linked packages follow',
+  filterPackagesBySearch(all, 'diwali').map(p => p.title).join(','),
+  'Diwali Delight,Radiant Glow,Royal Feast,Festival Lights'
 )
 check(
   'query "party" matches the 3 diwali + 1 birthday event packages',
@@ -124,7 +124,11 @@ check('theme search still matches theme slug', packageMatchesSearch(themePkg, 'd
 check('corporate package is recognized by its event link', isCorporateDecorPackage(corporatePkg), true)
 const navResults = filterNavHeaderSearchResults(all, 'diwali')
 check('nav search hides corporate package for generic "diwali" query', navResults.some(p => p.id === 7), false)
-check('nav search returns the non-corporate matches', navResults.map(p => p.title).join(','), 'Diwali Delight')
+check(
+  'nav search returns title hit + event-linked matches, no corporate',
+  navResults.map(p => p.title).join(','),
+  'Diwali Delight,Radiant Glow,Royal Feast,Festival Lights'
+)
 check('nav search still ignores 1-character queries', filterNavHeaderSearchResults(all, 'd').length, 0)
 
 if (failures > 0) {

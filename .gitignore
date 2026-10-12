@@ -1,6 +1,4 @@
 # ─── Environment (never commit secrets) ─────────────────────────────
-.env
-.env.local
 .env.*.local
 
 # ─── Node ────────────────────────────────────────────────────────────
@@ -45,3 +43,4 @@ Combined_Delivery_Charges.csv
 *.pdf
 elewen_dump.sql
 elewen_strapi.dump
+config.bat
