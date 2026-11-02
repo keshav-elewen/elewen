@@ -2,7 +2,7 @@
   "name": "elewen-strapi",
   "private": true,
   "version": "0.0.1",
-  "description": "Elewen CMS — Strapi v5",
+  "description": "Elewen CMS \u2014 Strapi v5",
   "scripts": {
     "postinstall": "node scripts/patch-strapi-hmr-port.mjs",
     "sync:google": "node scripts/sync-google-oauth-db.mjs",
@@ -37,8 +37,8 @@
     "seed:privacy-policy": "node scripts/run-privacy-policy-seed.cjs",
     "develop": "strapi develop --no-watch-admin",
     "develop:admin": "strapi develop",
-    "start": "strapi start",
-    "build": "strapi build",
+    "start": "node init && strapi start",
+    "build": "node init && strapi build",
     "strapi": "strapi"
   },
   "dependencies": {

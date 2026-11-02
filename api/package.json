@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "node -e \"console.log('No tests configured')\"",
-    "dev": "nodemon src/server.js",
-    "start": "node src/server.js",
+    "dev": "node init && nodemon src/server.js",
+    "start": "node init && node src/server.js",
     "prisma:generate": "prisma generate --schema=prisma/schema.prisma",
     "migrate:dev": "prisma migrate dev --schema=prisma/schema.prisma",
     "migrate:deploy": "prisma migrate deploy --schema=prisma/schema.prisma",
