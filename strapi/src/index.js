@@ -39,6 +39,18 @@ module.exports = {
       },
     });
 
+    try {
+      const { ensureEnvAdminUser } = require('./seed/env-admin-user');
+      const adminResult = await ensureEnvAdminUser(strapi);
+      if (!adminResult.skipped) {
+        strapi.log.info(
+          `[admin-bootstrap] ${adminResult.email}: created=${Boolean(adminResult.created)}, passwordReset=${Boolean(adminResult.passwordReset)}`
+        );
+      }
+    } catch (error) {
+      strapi.log.error(`[admin-bootstrap] Failed to ensure admin from env: ${error.message}`);
+    }
+
     if (process.env.RESEND_API_KEY) {
       const emailService = strapi.plugin('email')?.service('email');
       const originalSend = emailService?.send?.bind(emailService);
